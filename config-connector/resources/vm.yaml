@@ -1,0 +1,29 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: cnrm-demo-vm
+  namespace: config-connector
+  annotations:
+    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+spec:
+  resourceID: cnrm-demo-vm
+  machineType: e2-micro
+  zone: ${gcp_zone}
+  deletionProtection: false
+  bootDisk:
+    autoDelete: true
+    initializeParams:
+      size: 10
+      type: pd-balanced
+      sourceImageRef:
+        external: projects/debian-cloud/global/images/family/debian-12
+  networkInterface:
+    - networkRef:
+        name: cnrm-demo-network
+  scheduling:
+    automaticRestart: true
+    onHostMaintenance: MIGRATE
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: true
+    enableSecureBoot: true
+    enableVtpm: true

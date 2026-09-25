@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: config-connector
+  annotations:
+    cnrm.cloud.google.com/project-id: ${gcp_project_id}
+    kustomize.toolkit.fluxcd.io/prune: disabled

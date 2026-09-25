@@ -1,0 +1,42 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: config-connector-operator
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 1m
+  timeout: 10m
+  path: ./config-connector/operator
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substitute:
+      gcp_project_id: REPLACE_WITH_PROJECT_ID
+      cnrm_gsa_email: cnrm-controller@REPLACE_WITH_PROJECT_ID.iam.gserviceaccount.com
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: config-connector-resources
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: config-connector-operator
+  interval: 10m
+  retryInterval: 1m
+  timeout: 20m
+  path: ./config-connector/resources
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substitute:
+      gcp_project_id: REPLACE_WITH_PROJECT_ID
+      gcp_region: us-central1
+      gcp_zone: us-central1-a

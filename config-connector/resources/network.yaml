@@ -1,0 +1,9 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: cnrm-demo-network
+  namespace: config-connector
+spec:
+  resourceID: cnrm-demo-network
+  autoCreateSubnetworks: true
+  routingMode: REGIONAL
